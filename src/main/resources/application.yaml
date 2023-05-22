@@ -1,0 +1,12 @@
+ktor:
+    application:
+        modules:
+            - com.hegoudai.ApplicationKt.module
+    deployment:
+        port: 80
+jwt:
+    domain: "https://hegoudai.com/"
+    issuer: "https://hegoudai.com/"
+    audience: "jwt-audience"
+    secret: "secret"
+    realm: "ktor sample app"

@@ -1,0 +1,1 @@
+rootProject.name = "com.hegoudai.dchat_server"
