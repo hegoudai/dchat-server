@@ -37,4 +37,5 @@ dependencies {
     implementation("io.ktor:ktor-serialization-gson-jvm:$ktor_version")
     implementation("org.bouncycastle:bcprov-jdk15to18:$bouncycastle_version")
     implementation("org.bouncycastle:bcutil-jdk15to18:$bouncycastle_version")
+    implementation("dev.turingcomplete:kotlin-onetimepassword:2.4.0")
 }
