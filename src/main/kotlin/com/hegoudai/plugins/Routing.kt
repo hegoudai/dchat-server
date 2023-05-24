@@ -24,7 +24,7 @@ fun Application.configureRouting() {
                     JWT.create()
                             .withAudience(audience)
                             .withIssuer(issuer)
-                            .withClaim("address", message.fromAddress)
+                            .withClaim("pub", message.fromPub)
                             .sign(Algorithm.HMAC256(secret))
             call.respond(hashMapOf("token" to token))
         }

@@ -1,7 +1,6 @@
 package com.hegoudai.routes
 
 import com.google.gson.Gson
-import com.hegoudai.models.AddressInfos
 import com.hegoudai.models.EncryptedMessage
 import com.hegoudai.plugins.onlines
 import com.hegoudai.utils.CryptoUtils
@@ -18,23 +17,22 @@ fun Route.messageRouting() {
     route("/message") {
         post("/send") {
             val message = call.receive<EncryptedMessage>()
-            val addressInfos = AddressInfos.fromAddress(message.fromAddress)
             if (!CryptoUtils.ecSignVerify(
-                            addressInfos.pub,
+                            CryptoUtils.ecPubFromBytes(Base64.getUrlDecoder().decode(message.fromPub)),
                             MessageDigest.getInstance("SHA-256")
                                     .digest(message.content.toByteArray()),
                             Base64.getDecoder().decode(message.signature)
                     )
             ) {
                 // signature error
-                // todo better http code?
-                call.respondText("Signature error", status = HttpStatusCode.NotAcceptable)
+                call.respondText("Signature error", status = HttpStatusCode.BadRequest)
                 return@post
             }
-            if (onlines.containsKey(message.toAddress)) {
-                onlines[message.toAddress]!!.send(Gson().toJson(message))
+            if (onlines.containsKey(message.toPub)) {
+                onlines[message.toPub]!!.send(Gson().toJson(message))
                 call.respondText("Message sent", status = HttpStatusCode.OK)
             } else {
+                // todo cache message maybe
                 call.respondText("Address offline", status = HttpStatusCode.Accepted)
             }
         }

@@ -1,8 +1,9 @@
 package com.hegoudai.models
 
 data class EncryptedMessage(
-        val fromAddress: String,
-        val toAddress: String,
+        val fromPub: String,
+        val toPub: String,
+        val authority: String,
         val content: String,
         val iv: String,
         val signature: String

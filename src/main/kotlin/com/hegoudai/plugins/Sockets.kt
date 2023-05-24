@@ -23,8 +23,8 @@ fun Application.configureSockets() {
         authenticate {
             webSocket("/chat") {
                 // add to onlines
-                val address = call.principal<JWTPrincipal>()!!["address"]!!
-                onlines[address] = this
+                val pub = call.principal<JWTPrincipal>()!!["pub"]!!
+                onlines[pub] = this
                 try {
                     for (frame in incoming) {
                         frame as? Frame.Text ?: continue
@@ -32,7 +32,7 @@ fun Application.configureSockets() {
                 } catch (e: Exception) {
                     println(e.localizedMessage)
                 } finally {
-                    onlines.remove(address)
+                    onlines.remove(pub)
                 }
             }
         }
