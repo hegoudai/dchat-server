@@ -2,8 +2,10 @@ package com.hegoudai.routes
 
 import com.google.gson.Gson
 import com.hegoudai.models.EncryptedMessage
-import com.hegoudai.plugins.onlines
+import com.hegoudai.plugins.ONLINES
 import com.hegoudai.utils.CryptoUtils
+import com.hegoudai.utils.MESSAGE_CACHE
+import com.hegoudai.utils.addMsgToQueue
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -28,11 +30,12 @@ fun Route.messageRouting() {
                 call.respondText("Signature error", status = HttpStatusCode.BadRequest)
                 return@post
             }
-            if (onlines.containsKey(message.toPub)) {
-                onlines[message.toPub]!!.send(Gson().toJson(message))
+            if (ONLINES.containsKey(message.toPub)) {
+                ONLINES[message.toPub]!!.send(Gson().toJson(message))
                 call.respondText("Message sent", status = HttpStatusCode.OK)
             } else {
-                // todo cache message maybe
+                // add message to cache
+                MESSAGE_CACHE.addMsgToQueue(message, 1000)
                 call.respondText("Address offline", status = HttpStatusCode.Accepted)
             }
         }
