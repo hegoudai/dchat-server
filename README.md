@@ -1,4 +1,4 @@
-# dchat_server
+# dchat-server
 A server to transfer message for decentralized chat client using ktor. It consists of a login api, a message send api and a websocket.
 
 ## Api details
