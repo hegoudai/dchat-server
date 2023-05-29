@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag dchat-server:$(date +%s)
+      run: docker build . --file Dockerfile --tag hegoudai/dchat-server:$(date +%s)
