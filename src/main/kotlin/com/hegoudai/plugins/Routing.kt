@@ -26,7 +26,7 @@ fun Application.configureRouting() {
             // verify login opt
             val config = TimeBasedOneTimePasswordConfig(codeDigits = 6,
                 hmacAlgorithm = HmacAlgorithm.SHA256,
-                timeStep = 5,
+                timeStep = 22,
                 timeStepUnit = TimeUnit.SECONDS)
             val otp = TimeBasedOneTimePasswordGenerator(message.fromPub.toByteArray(), config).generate()
             if (!CryptoUtils.ecSignVerify(
