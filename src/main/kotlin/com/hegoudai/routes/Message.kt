@@ -16,8 +16,8 @@ import java.security.MessageDigest
 import java.util.Base64
 
 fun Route.messageRouting() {
-    route("/message") {
-        post("/send") {
+    route("/users") {
+        post("/{user_pk}/messages") {
             val message = call.receive<EncryptedMessage>()
             if (!CryptoUtils.ecSignVerify(
                             CryptoUtils.ecPubFromBytes(Base64.getUrlDecoder().decode(message.fromPub)),
@@ -30,8 +30,10 @@ fun Route.messageRouting() {
                 call.respondText("Signature error", status = HttpStatusCode.BadRequest)
                 return@post
             }
-            if (ONLINES.containsKey(message.toPub)) {
-                ONLINES[message.toPub]!!.send(Gson().toJson(message))
+
+            val toPub = call.parameters["user_pk"]
+            if (ONLINES.containsKey(toPub)) {
+                ONLINES[toPub]!!.send(Gson().toJson(message))
                 call.respondText("Message sent", status = HttpStatusCode.OK)
             } else {
                 // add message to cache
