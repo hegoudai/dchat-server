@@ -1,7 +1,7 @@
 # dchat-server
-A server to transfer message for decentralized chat client using ktor. It consists of a login api, a message send api and a websocket.
+A server to transfer message for dchat-client using ktor.
 
-## Api details
+## Apis
 ### /login
 The client will send the signature of a totp code with its private key to this api, and this api will validate the signature by the public key.
 If signature is valid, return a token to the client. Then the client will connect to the ws to receive message using this token.  
